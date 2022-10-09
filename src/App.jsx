@@ -1,14 +1,31 @@
-import { useState } from 'react'
+import { useState ,useEffect} from 'react'
 import reactLogo from './assets/react.svg';
 import { Header } from './components/Header';
 import Tasks from './components/Tasks';
 
+const LOCAL_STORAGE_KEY = 'todo:tasks';
+
 function App() {
   const [tasks, setTasks] = useState([]);
 
+  function setTasksAndSave(newTasks) {
+    setTasks(newTasks);
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newTasks));
+  }
+
+  function loadSavedTasks() {
+    const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if(saved) {
+      setTasks(JSON.parse(saved));
+    }
+  }
+
+  useEffect(() => {
+    loadSavedTasks();
+  }, [])
 
   function addTask(taskTitle) {
-    setTasks([...tasks, {
+    setTasksAndSave([...tasks, {
       id: crypto.randomUUID(),
       title: taskTitle,
       isCompleted: false
@@ -17,8 +34,7 @@ function App() {
 
   function deleteTask(taskId) {
     const newtask = tasks.filter(task => task.id !== taskId);
-    setTasks(newtask);
-
+    setTasksAndSave(newtask);
   }
 
 
@@ -32,7 +48,9 @@ function App() {
       }
       return task;
     });
-    setTasks(newTask)
+
+    setTasksAndSave(newTask)
+
   }
 
   return (
@@ -41,6 +59,8 @@ function App() {
       <Tasks tasks={tasks} onComplete={toggleTaskCompletedById} onDeleteTask={deleteTask} />
     </div>
   )
+
+
 }
 
 export default App
