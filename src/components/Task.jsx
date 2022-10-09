@@ -4,7 +4,7 @@ import { TbTrash } from 'react-icons/tb';
 import { BsFillCheckCircleFill } from 'react-icons/bs'
 
 
-const Task = ({ task, onComplete }) => {
+const Task = ({ task, onComplete, deleteTask }) => {
 
 
     return (
@@ -13,7 +13,7 @@ const Task = ({ task, onComplete }) => {
                 {task.isCompleted ? <BsFillCheckCircleFill /> : <div />}
             </button>
             <p className={task.isCompleted ? styles.textCompleted : ""}>{task.title}</p>
-            <button className={styles.deleteButton}>
+            <button className={styles.deleteButton} onClick={() => deleteTask(task.id)}>
                 <TbTrash size={20} />
             </button>
         </div>

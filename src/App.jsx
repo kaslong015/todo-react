@@ -4,7 +4,7 @@ import { Header } from './components/Header';
 import Tasks from './components/Tasks';
 
 function App() {
-  const [tasks,setTasks] = useState([]);
+  const [tasks, setTasks] = useState([]);
 
 
   function addTask(taskTitle) {
@@ -15,10 +15,16 @@ function App() {
     }]);
   }
 
+  function deleteTask(taskId) {
+    const newtask = tasks.filter(task => task.id !== taskId);
+    setTasks(newtask);
 
-  const toggleTaskCompletedById = (taskId) =>{
+  }
+
+
+  const toggleTaskCompletedById = (taskId) => {
     const newTask = tasks.map(task => {
-      if(task.id == taskId){
+      if (task.id == taskId) {
         return {
           ...task,
           isCompleted: !task.isCompleted
@@ -32,7 +38,7 @@ function App() {
   return (
     <div className="App">
       <Header onAddTask={addTask} />
-      <Tasks tasks={tasks} onComplete={toggleTaskCompletedById}/>
+      <Tasks tasks={tasks} onComplete={toggleTaskCompletedById} onDeleteTask={deleteTask} />
     </div>
   )
 }
