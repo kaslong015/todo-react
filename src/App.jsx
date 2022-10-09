@@ -8,17 +8,31 @@ function App() {
 
 
   function addTask(taskTitle) {
-    setTasksAndSave([...tasks, {
+    setTasks([...tasks, {
       id: crypto.randomUUID(),
       title: taskTitle,
       isCompleted: false
     }]);
   }
 
+
+  const toggleTaskCompletedById = (taskId) =>{
+    const newTask = tasks.map(task => {
+      if(task.id == taskId){
+        return {
+          ...task,
+          isCompleted: !task.isCompleted
+        }
+      }
+      return task;
+    });
+    setTasks(newTask)
+  }
+
   return (
     <div className="App">
       <Header onAddTask={addTask} />
-      <Tasks />
+      <Tasks tasks={tasks} onComplete={toggleTaskCompletedById}/>
     </div>
   )
 }
